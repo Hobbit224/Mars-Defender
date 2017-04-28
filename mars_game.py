@@ -4,6 +4,8 @@ from game_functions import check_events
 from player import Player
 from pygame.sprite import Group, groupcollide
 from bullet import Bullet
+from baddies import Enemy
+from random import randint
 
 
 # Main Game function
@@ -22,18 +24,25 @@ def run_game():
 	pygame.display.set_caption("Mars Defender")
 
 
+	baddy_position = randint(0, 900)
 
 	# Instantiate the player
 	the_player = Player(screen)
-	# bad_guy = Enemy(screen)
+	# Instantiate the bullet
+	bullet = Bullet(screen, the_player)
+	# Instantiate the enemy
+	baddy = Enemy(screen, baddy_position)
+
+
+
 	the_player_group = Group()
 	the_player_group.add(the_player)
 	enemies = Group()
-	# enemies.add(bad_guy)
+	enemies.add(baddy)
 	bullets = Group()
-
-	# Instantiate the bullet
 	bullet = Bullet(screen, the_player)
+
+	
 	# Main game loop
 	while 1:
 
@@ -44,15 +53,25 @@ def run_game():
 			the_player.draw_me()
 
 
+
+		# Draw and update the baddies
+		for enemy in enemies:
+			baddy.draw_me()
+			baddy.update_me()
+
+
+		# Make the bullets
+		for bull in bullets:
+			bullet.update()
+			bullet.draw_bullet()
+
+			
 		# Keep the screen up
 		pygame.display.flip()
 
 
-		# Make the bullets
-		for bullet in bullets:
-			bullet.update()
-			bullet.draw_bullet()
-			
+		
+
 
 
 		# Run the functions

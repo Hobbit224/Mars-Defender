@@ -9,7 +9,7 @@ class Player(Sprite):
 		super(Player, self).__init__()
 		self.image = pygame.image.load('./Images/MDship.png')
 		self.image = pygame.transform.scale(self.image, (92, 92))
-		self.x = 408
+		self.x = 500
 		self.y = 700
 		self.speed = 15
 		self.screen = screen
@@ -18,6 +18,8 @@ class Player(Sprite):
 		self.should_move_left = False
 		self.should_move_right = False
 		self.rect = self.image.get_rect()
+		self.rect.left = self.x
+		self.rect.top = self.y
 
 	def draw_me(self):
 		# if(self.should_move_up):
