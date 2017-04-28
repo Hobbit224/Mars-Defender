@@ -40,7 +40,7 @@ def run_game():
 	enemies = Group()
 	enemies.add(baddy)
 	bullets = Group()
-	bullet = Bullet(screen, the_player)
+	
 
 	
 	# Main game loop
@@ -62,20 +62,32 @@ def run_game():
 
 		# Make the bullets
 		for bull in bullets:
-			bullet.update()
-			bullet.draw_bullet()
+			bull.update()
+			bull.draw_bullet()
 
-			
-		# Keep the screen up
-		pygame.display.flip()
-
-
-		
 
 
 
 		# Run the functions
 		check_events(the_player, screen, bullets)
+
+		# Check for collisions
+		hero_died = groupcollide(the_player_group, enemies, True, False)
+		enemy_died = groupcollide(bullets, enemies, True, True)
+
+		# Make new enemies
+		if enemy_died:
+			baddy_position = randint(0, 900)
+
+			baddy = Enemy(screen, baddy_position)
+			enemies.add(baddy)
+
+			# baddy.draw_me()
+			# baddy.update_me()
+
+
+		# Keep the screen up
+		pygame.display.flip()
 
 
 # Calling the game function

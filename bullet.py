@@ -10,8 +10,8 @@ class Bullet(Sprite):
 		self.rect.top = hero.rect.top
 		self.color = (0,0,0)
 		self.speed = 10
-		self.y = self.rect.y
-		self.x = self.rect.x
+		self.y = hero.rect.top
+		self.x = hero.rect.centerx
 		self.direction = 'up'
 
 	def update(self):

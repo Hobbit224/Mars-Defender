@@ -9,16 +9,16 @@ class Enemy(Sprite):
 		self.image = pygame.transform.scale(self.image, (92, 92))
 		self.speed = 7
 		self.start_x = start_x
-		self.x = self.start_x
+		# self.start_y = 0
 		self.y = 0
 		self.screen = screen
 		self.rect = self.image.get_rect()
-		self.rect.left = self.x
+		self.rect.left = self.start_x
 		self.rect.top = self.y
 
 	def draw_me (self):
-		self.screen.blit(self.image, [self.x, self.y])
-		self.rect.left = self.x
+		self.screen.blit(self.image, [self.start_x, self.y])
+		self.rect.left = self.start_x
 		self.rect.top = self.y
 
 	def update_me(self):
