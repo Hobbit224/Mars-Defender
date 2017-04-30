@@ -30,6 +30,33 @@ bright_red = (255,0,0)
 green = (0, 200, 0)
 bright_green =(0, 255, 0)
 
+paused = False
+
+def unpause():
+	# global paused 
+	pause = False
+
+def pause():	
+
+	while pause:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
+		screen.fill(black)
+		large_text = pygame.font.Font('freesansbold.ttf', 115)
+		TextSurf, TextRect = title_text("Mars Defender", large_text)
+		TextRect.center = ((500),(400))
+		screen.blit(TextSurf, TextRect)
+
+
+		button_function("Continue",200,550,100,50,green,bright_green,"unpause")
+		button_function("Quit",700,550,100,50,red,bright_red,"quit")
+
+
+
+
+
 def title_text(text, font):
 	textSurface = font.render(text, True, mars_red)
 	return textSurface, textSurface.get_rect()
@@ -51,6 +78,10 @@ def button_function(msg,x,y,w,h,ic,ac,action=None):
 				run_game()
 			elif action == "quit":
 				pygame.quit()
+			elif action == "pause":
+				pause()
+			elif action == "unpause":
+				unpause()
 
 	else:
 		pygame.draw.rect(screen, ic, (x, y, w, h))
@@ -60,10 +91,6 @@ def button_function(msg,x,y,w,h,ic,ac,action=None):
 	text_surf1, text_rect1 = button_text(msg, small_text)
 	text_rect1.center = ((x+(w/2)), (y+(h/2)))
 	screen.blit(text_surf1, text_rect1)
-
-
-
-
 
 
 
@@ -101,6 +128,14 @@ def game_intro():
 # Main Game function
 
 def run_game():
+	
+	# global paused
+	# for event in pygame.event.get():
+	# 	if event.type == pygame.KEYDOWN:
+	# 		if event.key == 112:
+	# 			paused = True
+	# 			pause()
+
 
 
 	baddy_position = randint(0, 900)
@@ -122,7 +157,13 @@ def run_game():
 	
 	# Main game loop
 	while 1:
-		
+		# for event in pygame.event.get():
+		# 	if event.type == pygame.KEYDOWN:
+		# 		if event.key == 112:
+		# 			paused = True
+		# 			pause()
+
+
 		# Create background color
 		screen.fill(background_color)
 		# Draw the player

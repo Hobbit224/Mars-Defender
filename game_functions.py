@@ -2,6 +2,7 @@
 import pygame
 import sys
 from bullet import Bullet
+from player import Player
 
 def check_events(the_player, screen, bullets):
 	for event in pygame.event.get():
@@ -22,6 +23,9 @@ def check_events(the_player, screen, bullets):
 				# for direction in range(1,5):
 				new_bullet = Bullet(screen,the_player)
 				bullets.add(new_bullet)
+			
+
+
 			 
 		elif event.type == pygame.KEYUP:
 			# if event.key == 273:
@@ -32,3 +36,10 @@ def check_events(the_player, screen, bullets):
 				the_player.should_move("left", False) 
 			if event.key == 275:
 				the_player.should_move("right", False)
+
+
+	# Creating the bounderies
+	if the_player.x <= 0:
+		the_player.x = 0
+	if the_player.x >= 908:
+		the_player.x =908
