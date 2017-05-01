@@ -32,7 +32,17 @@ green = (0, 200, 0)
 bright_green =(0, 255, 0)
 
 
+# Music
+def game_music():
+	pygame.mixer.music.load('./Sounds/finished_song.wav')
+	pygame.mixer.music.play(-1)
 
+def intro_music():
+	pygame.mixer.music.load('./Sounds/intro_music.wav')
+	pygame.mixer.music.play(-1)
+def fail_music():
+	pygame.mixer.music.load('./Sounds/fail_music.wav')
+	pygame.mixer.music.play(0)
 
 # Display messages
 
@@ -83,7 +93,7 @@ def game_intro():
 	# Initialize pygame
 	pygame.init()
 	
-
+	intro_music()
 	intro = True
 
 	while intro:
@@ -110,6 +120,8 @@ def game_intro():
 
 # Lose state
 def you_lose():
+	pygame.mixer.music.stop()
+	fail_music()
 	lost = True
 
 	while lost:
@@ -144,6 +156,7 @@ def run_game():
 	# 			paused = True
 	# 			pause()
 
+	game_music()
 
 
 	baddy_position = randint(0, 900)
@@ -167,13 +180,14 @@ def run_game():
 
 	# Main game loop
 	while 1:
+		
 		tick += 1
 
 
 		# wins_font = pygame.font.Font("freesansbold.ttf", 25)
 		# wins_text = wins_font.render(("Score: %d") % (wins_num), True, (0,0,0))
 		# screen.blit(wins_text, [40, 40])
-		
+
 
 
 		if baddy.y >=800:
