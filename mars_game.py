@@ -9,6 +9,7 @@ from random import randint
 import time
 
 
+
 # Set up tuple for screen size
 screen_size = (1000, 800)
 # Set up a tuple for the bg color
@@ -30,40 +31,22 @@ bright_red = (255,0,0)
 green = (0, 200, 0)
 bright_green =(0, 255, 0)
 
-paused = False
-
-def unpause():
-	# global paused 
-	pause = False
-
-def pause():	
-
-	while pause:
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				pygame.quit()
-				quit()
-		screen.fill(black)
-		large_text = pygame.font.Font('freesansbold.ttf', 115)
-		TextSurf, TextRect = title_text("Mars Defender", large_text)
-		TextRect.center = ((500),(400))
-		screen.blit(TextSurf, TextRect)
-
-
-		button_function("Continue",200,550,100,50,green,bright_green,"unpause")
-		button_function("Quit",700,550,100,50,red,bright_red,"quit")
 
 
 
-
+# Display messages
 
 def title_text(text, font):
-	textSurface = font.render(text, True, mars_red)
+	textSurface = font.render(text, True, red)
 	return textSurface, textSurface.get_rect()
 
 def button_text(text, font):
 	textSurface = font.render(text, True, white)
 	return textSurface, textSurface.get_rect()
+def lose_text(text, font):
+	textSurface = font.render(text,font,True,black)
+	return textSurface, textSurface.get_rect()
+
 
 
 	# (message, x, y, width, height, inactive color, active color)
@@ -82,6 +65,7 @@ def button_function(msg,x,y,w,h,ic,ac,action=None):
 				pause()
 			elif action == "unpause":
 				unpause()
+
 
 	else:
 		pygame.draw.rect(screen, ic, (x, y, w, h))
@@ -124,11 +108,35 @@ def game_intro():
 		pygame.display.update()
 		clock.tick(15)
 
+# Lose state
+def you_lose():
+	lost = True
+
+	while lost:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
+		screen.fill(black)
+		large_text = pygame.font.Font('freesansbold.ttf', 115)
+		TextSurf, TextRect = title_text("Mars has fallen", large_text)
+		TextRect.center = ((500),(400))
+		screen.blit(TextSurf, TextRect)
+
+
+		button_function("Try again?",200,550,100,50,green,bright_green,"play")
+		button_function("Quit",700,550,100,50,red,bright_red,"quit")
+
+		pygame.display.update()
+	
+
+
 
 # Main Game function
 
 def run_game():
-	
+	tick = 0
+	wins_num = 0
 	# global paused
 	# for event in pygame.event.get():
 	# 	if event.type == pygame.KEYDOWN:
@@ -154,14 +162,22 @@ def run_game():
 	bullets = Group()
 
 
-	
+	# if baddy.y >=800:
+	# 	you_lose()
+
 	# Main game loop
 	while 1:
-		# for event in pygame.event.get():
-		# 	if event.type == pygame.KEYDOWN:
-		# 		if event.key == 112:
-		# 			paused = True
-		# 			pause()
+		tick += 1
+
+
+		# wins_font = pygame.font.Font("freesansbold.ttf", 25)
+		# wins_text = wins_font.render(("Score: %d") % (wins_num), True, (0,0,0))
+		# screen.blit(wins_text, [40, 40])
+		
+
+
+		if baddy.y >=800:
+			you_lose()
 
 
 		# Create background color
@@ -199,6 +215,12 @@ def run_game():
 
 			baddy = Enemy(screen, baddy_position)
 			enemies.add(baddy)
+			wins_num += 1
+		# if tick % 300 == 0:
+		# 	baddy_position = randint(0, 900)
+
+		# 	baddy = Enemy(screen, baddy_position)
+		# 	enemies.add(baddy)
 
 
 		# Keep the screen up

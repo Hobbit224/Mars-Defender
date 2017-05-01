@@ -7,7 +7,7 @@ class Enemy(Sprite):
 		super(Enemy, self).__init__()
 		self.image = pygame.image.load('./images/Enemyship1.png')
 		self.image = pygame.transform.scale(self.image, (92, 92))
-		self.speed = 7
+		self.speed = 10
 		self.start_x = start_x
 		# self.start_y = 0
 		self.y = 0

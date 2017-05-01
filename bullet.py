@@ -9,7 +9,7 @@ class Bullet(Sprite):
 		self.rect.centerx = hero.rect.centerx
 		self.rect.top = hero.rect.top
 		self.color = (0,0,0)
-		self.speed = 10
+		self.speed = 15
 		self.y = hero.rect.top
 		self.x = hero.rect.centerx
 		self.direction = 'up'
