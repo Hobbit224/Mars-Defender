@@ -1,12 +1,13 @@
 # Importations
 import pygame
-from game_functions import check_events
 from player import Player
 from pygame.sprite import Group, groupcollide
 from bullet import Bullet
 from baddies import Enemy
 from random import randint
 import time
+
+
 
 
 
@@ -30,6 +31,9 @@ red = (200,0,0)
 bright_red = (255,0,0)
 green = (0, 200, 0)
 bright_green =(0, 255, 0)
+
+
+
 
 
 # Music
@@ -57,9 +61,14 @@ def lose_text(text, font):
 	textSurface = font.render(text,font,True,black)
 	return textSurface, textSurface.get_rect()
 
+def pause_text(text, font):
+	textSurface = font.render(text, True, mars_red)
+	return textSurface, textSurface.get_rect()
 
 
-	# (message, x, y, width, height, inactive color, active color)
+
+
+# (message, x, y, width, height, inactive color, active color)
 def button_function(msg,x,y,w,h,ic,ac,action=None):
 	mouse = pygame.mouse.get_pos()
 	click = pygame.mouse.get_pressed()
@@ -72,9 +81,9 @@ def button_function(msg,x,y,w,h,ic,ac,action=None):
 			elif action == "quit":
 				pygame.quit()
 			elif action == "pause":
-				pause()
+				paused = True
 			elif action == "unpause":
-				unpause()
+				paused = False
 
 
 	else:
@@ -147,14 +156,11 @@ def you_lose():
 # Main Game function
 
 def run_game():
+	paused = False
+
 	tick = 0
 	wins_num = 0
-	# global paused
-	# for event in pygame.event.get():
-	# 	if event.type == pygame.KEYDOWN:
-	# 		if event.key == 112:
-	# 			paused = True
-	# 			pause()
+
 
 	game_music()
 
@@ -175,11 +181,13 @@ def run_game():
 	bullets = Group()
 
 
-	# if baddy.y >=800:
-	# 	you_lose()
+	
+
+
 
 	# Main game loop
 	while 1:
+
 		
 		tick += 1
 
@@ -187,6 +195,78 @@ def run_game():
 		# wins_font = pygame.font.Font("freesansbold.ttf", 25)
 		# wins_text = wins_font.render(("Score: %d") % (wins_num), True, (0,0,0))
 		# screen.blit(wins_text, [40, 40])
+
+
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit()
+			elif event.type == pygame.KEYDOWN:
+				print event.key
+				# if event.key == 273:
+					# the_player.should_move("up", True)
+				# elif event.key == 274:
+					# the_player.should_move("down", True)
+				if event.key == 275:
+					the_player.should_move("right", True)
+				elif event.key == 276:
+					the_player.should_move("left", True)
+				elif event.key == 32:
+					# User pressed spacebar, fire!
+					# for direction in range(1,5):
+					new_bullet = Bullet(screen,the_player)
+					bullets.add(new_bullet)
+				elif event.key == 112 and paused == False:
+					paused = True
+				
+				
+
+			elif event.type == pygame.KEYUP: 
+				if event.key == 276:
+					the_player.should_move("left", False) 
+				if event.key == 275:
+					the_player.should_move("right", False)
+
+
+
+
+		while paused:
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					pygame.quit()
+					quit()
+			screen.fill(black)
+			large_text = pygame.font.Font('freesansbold.ttf', 115)
+			TextSurf, TextRect = pause_text("Paused", large_text)
+			TextRect.center = ((500),(400))
+			screen.blit(TextSurf, TextRect)
+
+
+
+			button_function("Continue",200,550,100,50,green,bright_green,"unpause")
+			button_function("Quit",700,550,100,50,red,bright_red,"quit")
+
+			
+			pygame.display.update()
+			clock.tick(15)
+
+
+
+
+
+
+
+
+
+
+		# Creating the bounderies
+		if the_player.x <= 0:
+			the_player.x = 0
+		if the_player.x >= 908:
+			the_player.x =908
+
+
+
+
 
 
 
@@ -216,9 +296,7 @@ def run_game():
 
 
 
-		# Run the functions
-		check_events(the_player, screen, bullets)
-
+		
 		# Check for collisions
 		hero_died = groupcollide(the_player_group, enemies, True, False)
 		enemy_died = groupcollide(bullets, enemies, True, True)
